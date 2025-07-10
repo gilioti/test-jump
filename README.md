@@ -146,7 +146,7 @@ php artisan test
 ## 🧪 Testando a API
 
 ### Collection do Postman
-Para facilitar os testes, foi incluída a collection **Teste Jump.postman_collection.json** no projeto. O recrutador pode importar esta collection no Postman para testar todos os endpoints de forma mais simples e organizada.
+Para facilitar os testes, foi incluída a collection **teste.jump.postman_collection.json** no projeto. O recrutador pode importar esta collection no Postman para testar todos os endpoints de forma mais simples e organizada.
 
 ### Exemplo de criação de usuário:
 **Método**: POST  
