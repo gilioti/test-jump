@@ -6,7 +6,7 @@ Este é um projeto Laravel que gerencia ordens de serviço para veículos, permi
 
 - PHP 8.2 ou superior
 - Composer
-- Node.js e npm
+- Laravel (última versão)
 - MySQL (banco de dados principal do projeto)
 
 ## 🚀 Como clonar e configurar o projeto
