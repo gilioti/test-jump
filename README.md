@@ -13,7 +13,7 @@ Este é um projeto Laravel que gerencia ordens de serviço para veículos, permi
 
 ### 1. Clone o repositório
 ```bash
-git clone <url-do-repositorio>
+git clone https://github.com/gilioti/test-jump
 cd test-jump
 ```
 
@@ -22,12 +22,7 @@ cd test-jump
 composer install
 ```
 
-### 3. Instale as dependências JavaScript
-```bash
-npm install
-```
-
-### 4. Configure o ambiente
+### 3. Configure o ambiente
 ```bash
 # Copie o arquivo de exemplo de ambiente
 cp .env.example .env
@@ -55,13 +50,9 @@ DB_PASSWORD=
 php artisan migrate
 ```
 
-### 7. Inicie o servidor de desenvolvimento
+### 6. Inicie o servidor de desenvolvimento
 ```bash
-# Terminal 1 - Servidor PHP
 php artisan serve
-
-# Terminal 2 - Vite (para assets)
-npm run dev
 ```
 
 ## 📚 Regras de Negócio
@@ -149,38 +140,35 @@ php artisan test
 - O relacionamento entre `service_orders` e `users` é obrigatório
 - Todas as colunas da tabela `service_orders` são mapeadas nos modelos
 
-### 5. Desenvolvimento
-Para desenvolvimento com hot-reload completo:
-```bash
-composer run dev
-```
-Este comando inicia:
-- Servidor PHP (Laravel)
-- Queue listener
-- Logs em tempo real
-- Vite para assets
+
 
 ## 🧪 Testando a API
 
 ### Exemplo de criação de usuário:
-```bash
-curl -X POST http://localhost:8000/api/users \
-  -H "Content-Type: application/json" \
-  -d '{"name": "João Silva"}'
+**Método**: POST  
+**URL**: `http://localhost:8000/api/users`  
+**Headers**: `Content-Type: application/json`  
+**Body**:
+```json
+{
+  "name": "João Silva"
+}
 ```
 
 ### Exemplo de criação de ordem de serviço:
-```bash
-curl -X POST http://localhost:8000/api/service-orders \
-  -H "Content-Type: application/json" \
-  -d '{
-    "vehiclePlate": "ABC1234",
-    "entryDateTime": "2024-01-15T10:30:00",
-    "exitDateTime": "2024-01-15T12:30:00",
-    "priceType": "hora",
-    "price": 100.50,
-    "userId": 1
-  }'
+**Método**: POST  
+**URL**: `http://localhost:8000/api/service-orders`  
+**Headers**: `Content-Type: application/json`  
+**Body**:
+```json
+{
+  "vehiclePlate": "ABC1234",
+  "entryDateTime": "2024-01-15T10:30:00",
+  "exitDateTime": "2024-01-15T12:30:00",
+  "priceType": "hora",
+  "price": 100.50,
+  "userId": 1
+}
 ```
 
 ## 📁 Estrutura do Projeto
@@ -210,124 +198,7 @@ test-jump/
     │   └── ServiceOrderTest.php
     └── Unit/
         └── ExampleTest.php
-
-## 🎯 Controllers
-
-### Controller.php (Base)
-- Classe abstrata base para todos os controllers
-- Localização: `app/Http/Controllers/Controller.php`
-
-### UserController.php
-**Localização**: `app/Http/Controllers/UserController.php`
-
-**Métodos**:
-- `index()`: Retorna todos os usuários (GET /api/users)
-- `store(Request $request)`: Cria um novo usuário (POST /api/users)
-  - Validação: `name` obrigatório, string, máximo 255 caracteres
-  - Retorna: JSON com status 201
-
-### ServiceOrderController.php
-**Localização**: `app/Http/Controllers/ServiceOrderController.php`
-
-**Métodos**:
-- `index()`: Retorna todas as ordens de serviço com dados do usuário (GET /api/service-orders)
-- `store(Request $request)`: Cria uma nova ordem de serviço (POST /api/service-orders)
-  - Validações:
-    - `vehiclePlate`: obrigatório, string, exatamente 7 caracteres
-    - `entryDateTime`: obrigatório, formato data
-    - `exitDateTime`: opcional, formato data
-    - `priceType`: opcional, string
-    - `price`: obrigatório, numérico
-    - `userId`: obrigatório, deve existir na tabela users
-  - Retorna: JSON com status 200 e mensagem de sucesso
-
-## 🗃️ Models
-
-### User.php
-**Localização**: `app/Models/User.php`
-
-**Características**:
-- Estende `Authenticatable` (preparado para autenticação)
-- Usa traits: `HasFactory`, `Notifiable`
-- Campos preenchíveis: `['name']`
-- Relacionamento: Uma ordem de serviço pertence a um usuário
-
-### ServiceOrder.php
-**Localização**: `app/Models/ServiceOrder.php`
-
-**Características**:
-- Estende `Model`
-- Campos preenchíveis: `['vehiclePlate', 'entryDateTime', 'exitDateTime', 'priceType', 'price', 'userId']`
-- Relacionamento: `belongsTo(User::class, 'userId')`
-
-## 🛣️ Rotas
-
-**Arquivo**: `routes/api.php`
-
-### Prefixo: `/api/service-orders`
-- `GET /` → `ServiceOrderController@index`
-- `POST /` → `ServiceOrderController@store`
-
-### Prefixo: `/api/users`
-- `GET /` → `UserController@index`
-- `POST /` → `UserController@store`
-
-### Rota raiz
-- `GET /api/` → Retorna "Welcome to the API!"
-
-## 🧪 Testes
-
-### Estrutura de Testes
-O projeto usa **Pest PHP** como framework de testes, conforme especificação do projeto. Pest oferece uma sintaxe mais expressiva que o PHPUnit tradicional.
-
-### TestCase.php
-**Localização**: `tests/TestCase.php`
-- Classe base abstrata para todos os testes
-- Estende `Illuminate\Foundation\Testing\TestCase`
-- Fornece funcionalidades base do Laravel para testes
-
-### ServiceOrderTest.php
-**Localização**: `tests/Feature/ServiceOrderTest.php`
-
-**Tipo**: Teste de Feature (testa funcionalidades completas da aplicação)
-
-**Testes implementados** (conforme especificação do projeto):
-
-1. **Teste de criação bem-sucedida**:
-   - Cria um usuário usando factory
-   - Envia payload válido para criar ordem de serviço
-   - Verifica resposta **código 200** com corpo esperado de sucesso
-   - Verifica se dados foram salvos no banco
-
-2. **Teste de validação de erros**:
-   - Envia dados inválidos (placa incorreta, data inválida, etc.)
-   - Verifica resposta **NÃO recebendo código 200** e corpo esperado de erro
-   - Verifica se status é 'error'
-
-**Dependências**:
-- Usa `RefreshDatabase` trait (limpa banco antes de cada teste)
-- Usa `UserFactory` para criar dados de teste
-- Requer usuário existente para funcionar corretamente
-
-### ExampleTest.php
-**Localização**: `tests/Unit/ExampleTest.php`
-- Teste unitário básico de exemplo
-- Usa PHPUnit tradicional (não Pest)
-- Verifica se `true` é `true`
-
-### Organização dos Testes
-- **Feature Tests** (`tests/Feature/`): Testam funcionalidades completas, incluindo rotas, controllers e models
-- **Unit Tests** (`tests/Unit/`): Testam unidades específicas de código isoladamente
-
-## 🏭 Factories
-
-### UserFactory.php
-**Localização**: `database/factories/UserFactory.php`
-
-**Funcionalidade**:
-- Gera dados fake para usuários
-- Campo `name`: usa `$this->faker->name()`
-- Usado nos testes para criar usuários de exemplo
+```
 
 ## 🔧 Comandos Úteis
 
@@ -348,8 +219,6 @@ php artisan route:list
 
 ## 📝 Notas Adicionais
 
-- O projeto usa Laravel Sanctum para autenticação (configurado mas não implementado nos endpoints)
-- Frontend usa Tailwind CSS v4 e Vite
 - **Framework**: Laravel PHP (versão mais atualizada possível)
 - **Banco de Dados**: MySQL (conforme especificação)
 - **Testes**: Pest PHP (conforme especificação)
