@@ -40,8 +40,8 @@ DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_DATABASE=test_jump
-DB_USERNAME=root
-DB_PASSWORD=
+DB_USERNAME=<username-local>
+DB_PASSWORD=<password-local>
 ```
 
 **Importante**: Certifique-se de que o banco de dados `test_jump` existe no MySQL antes de executar as migrações.
@@ -108,8 +108,8 @@ O sistema possui duas entidades principais baseadas no banco MySQL:
 ```json
 {
   "vehiclePlate": "ABC1234",
-  "entryDateTime": "2024-01-15T10:30:00",
-  "exitDateTime": "2024-01-15T12:30:00",
+  "entryDateTime": "2024-01-15 10:30:00",
+  "exitDateTime": "2024-01-15 12:30:00",
   "priceType": "hora",
   "price": 100.50,
   "userId": 1
@@ -144,6 +144,9 @@ php artisan test
 
 
 ## 🧪 Testando a API
+
+### Collection do Postman
+Para facilitar os testes, foi incluída a collection **Teste Jump.postman_collection.json** no projeto. O recrutador pode importar esta collection no Postman para testar todos os endpoints de forma mais simples e organizada.
 
 ### Exemplo de criação de usuário:
 **Método**: POST  
