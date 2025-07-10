@@ -6,7 +6,6 @@ Este é um projeto Laravel que gerencia ordens de serviço para veículos, permi
 
 - PHP 8.2 ou superior
 - Composer
-- Laravel (última versão)
 - MySQL (banco de dados principal do projeto)
 
 ## 🚀 Como clonar e configurar o projeto
@@ -22,6 +21,8 @@ cd test-jump
 composer install
 ```
 
+> **Nota**: O Composer instalará automaticamente a versão mais recente do Laravel Framework conforme especificado no `composer.json`.
+
 ### 3. Configure o ambiente
 ```bash
 # Copie o arquivo de exemplo de ambiente
@@ -31,7 +32,7 @@ cp .env.example .env
 php artisan key:generate
 ```
 
-### 5. Configure o banco de dados
+### 4. Configure o banco de dados
 O projeto usa **MySQL** como banco de dados principal. Configure o arquivo `.env`:
 
 ```env
@@ -45,7 +46,7 @@ DB_PASSWORD=
 
 **Importante**: Certifique-se de que o banco de dados `test_jump` existe no MySQL antes de executar as migrações.
 
-### 6. Execute as migrações
+### 5. Execute as migrações
 ```bash
 php artisan migrate
 ```
